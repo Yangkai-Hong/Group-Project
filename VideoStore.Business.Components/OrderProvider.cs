@@ -7,6 +7,8 @@ using VideoStore.Business.Entities;
 using System.Transactions;
 using Microsoft.Practices.ServiceLocation;
 using DeliveryCo.MessageTypes;
+using VideoStore.Services;
+using System.Threading;
 
 namespace VideoStore.Business.Components
 {
@@ -24,7 +26,7 @@ namespace VideoStore.Business.Components
 
         public void SubmitOrder(Entities.Order pOrder)
         {
-           
+
             using (TransactionScope lScope = new TransactionScope())
             {
                 LoadMediaStocks(pOrder);
@@ -33,17 +35,26 @@ namespace VideoStore.Business.Components
                 {
                     try
                     {
+                        Status.bankInfoStatus = BankStatus.Failed;
                         pOrder.OrderNumber = Guid.NewGuid();
-                        TransferFundsFromCustomer(UserProvider.ReadUserById(pOrder.Customer.Id).BankAccountNumber, pOrder.Total ?? 0.0);
 
+                        Thread thread1 = new Thread(delegate ()
+                        {
+                            TransferFundsFromCustomer(UserProvider.ReadUserById(pOrder.Customer.Id).BankAccountNumber, pOrder.Total ?? 0.0);
+                        });
+                        thread1.Start();
+                        Thread.Sleep(3500);
+
+                        if (Status.bankInfoStatus == BankStatus.Failed)
+                            throw new Exception("Insufficient balance");
                         pOrder.UpdateStockLevels();
 
                         PlaceDeliveryForOrder(pOrder);
+                        SendOrderPlacedConfirmation(pOrder);
                         lContainer.Orders.ApplyChanges(pOrder);
-         
                         lContainer.SaveChanges();
                         lScope.Complete();
-                        
+
                     }
                     catch (Exception lException)
                     {
@@ -51,9 +62,10 @@ namespace VideoStore.Business.Components
                         throw;
                     }
                 }
-            }
-            SendOrderPlacedConfirmation(pOrder);
+            }    
         }
+
+        
 
         private void MarkAppropriateUnchangedAssociations(Order pOrder)
         {
@@ -99,17 +111,25 @@ namespace VideoStore.Business.Components
 
         private void PlaceDeliveryForOrder(Order pOrder)
         {
-            Delivery lDelivery = new Delivery() { DeliveryStatus = DeliveryStatus.Submitted, SourceAddress = "Video Store Address", DestinationAddress = pOrder.Customer.Address, Order = pOrder };
+            Guid identifier = Guid.NewGuid();
+            Delivery lDelivery = new Delivery()
+            {
+                ExternalDeliveryIdentifier = identifier,
+                DeliveryStatus = DeliveryStatus.Submitted,
+                SourceAddress = "Video Store Address",
+                DestinationAddress = pOrder.Customer.Address,
+                Order = pOrder
+            };
 
-            Guid lDeliveryIdentifier = ExternalServiceFactory.Instance.DeliveryService.SubmitDelivery(new DeliveryInfo()
-            { 
-                OrderNumber = lDelivery.Order.OrderNumber.ToString(),  
+            DeliveryService.DeliveryServiceClient lClient = new DeliveryService.DeliveryServiceClient();
+            lClient.SubmitDelivery(new DeliveryInfo()
+            {
+                OrderNumber = lDelivery.Order.OrderNumber.ToString(),
                 SourceAddress = lDelivery.SourceAddress,
                 DestinationAddress = lDelivery.DestinationAddress,
                 DeliveryNotificationAddress = "net.tcp://localhost:9010/DeliveryNotificationService"
             });
-
-            lDelivery.ExternalDeliveryIdentifier = lDeliveryIdentifier;
+            lDelivery.ExternalDeliveryIdentifier = identifier;
             pOrder.Delivery = lDelivery;
             
         }
@@ -118,14 +138,18 @@ namespace VideoStore.Business.Components
         {
             try
             {
-                ExternalServiceFactory.Instance.TransferService.Transfer(pTotal, pCustomerAccountNumber, RetrieveVideoStoreAccountNumber());
+                //ExternalServiceFactory.Instance.TransferService.Transfer(pTotal, pCustomerAccountNumber, RetrieveVideoStoreAccountNumber());
+                TransferService.TransferServiceClient lClient = new TransferService.TransferServiceClient();
+                lClient.Transfer(pTotal, pCustomerAccountNumber, RetrieveVideoStoreAccountNumber(),"net.tcp://localhost:9010/BankNotificationService");
+           
             }
             catch(Exception e)
             {
-                throw new Exception("Error Transferring funds for order.");
+                // throw new Exception(e.Message);
             }
         }
 
+        
 
         private int RetrieveVideoStoreAccountNumber()
         {

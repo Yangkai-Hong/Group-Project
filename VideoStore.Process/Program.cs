@@ -49,7 +49,7 @@ namespace VideoStore.Process
             {
                 Name = "Customer",
                 LoginCredential = new LoginCredential() { UserName = "Customer", Password = "COMP5348" },
-                Email = "David@Sydney.edu.au",
+                Email = "Operator@Operator.com",
                 Address = "1 Central Park",
                 BankAccountNumber = 456,
             };
@@ -103,7 +103,7 @@ namespace VideoStore.Process
 
                     lContainer.Stocks.AddObject(lSoloistStock);
 
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 30; i++)
                     {
                         Media lItem = new Media()
                         {
@@ -151,8 +151,8 @@ namespace VideoStore.Process
             User lOperator = new User()
             {
                 Name = "Operator",
-                LoginCredential = new LoginCredential() { UserName = "Operator", Password = "COMP5348" },
-                Email = "Wang@Sydney.edu.au",
+                LoginCredential = new LoginCredential() { UserName = "Operator", Password = "Operator" },
+                Email = "Operator@Operator.com",
                 Address = "1 Central Park"
             };
 

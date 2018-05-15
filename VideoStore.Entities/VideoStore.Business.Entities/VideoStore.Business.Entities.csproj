@@ -64,6 +64,7 @@
     <Compile Include="OrderItem.cs">
       <DependentUpon>VideoEntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Partial\Bank.cs" />
     <Compile Include="Partial\Delivery.cs" />
     <Compile Include="Partial\LoginCredential.cs" />
     <Compile Include="Partial\Order.cs" />
