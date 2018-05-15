@@ -52,27 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankNotificationProvider.cs" />
     <Compile Include="CatalogueProvider.cs" />
     <Compile Include="DeliveryNotificationProvider.cs" />
     <Compile Include="EmailProvider.cs" />
     <Compile Include="ExternalServiceFactory.cs" />
     <Compile Include="RoleProvider.cs" />
-    <Compile Include="Service References\DeliveryService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\EmailTransferService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\TransferService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="UserProvider.cs" />
     <Compile Include="OrderProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,10 +79,6 @@
       <Project>{7e7a8d7d-87cf-420f-a72b-8f4a258bb48a}</Project>
       <Name>DeliveryCo.Services.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmailService.Business.Entities.Interfaces\EmailService.Business.Components.Interfaces.csproj">
-      <Project>{2AF87E55-5C90-4454-AA47-BF8B14CBD874}</Project>
-      <Name>EmailService.Business.Components.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EmailService.MessageTypes\EmailService.MessageTypes.csproj">
       <Project>{3d1f0292-0cd7-4140-b463-d7edb3122627}</Project>
       <Name>EmailService.MessageTypes</Name>
@@ -115,84 +95,12 @@
       <Project>{35992EC3-2C32-46AF-AEE4-491C54F681A5}</Project>
       <Name>VideoStore.Business.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VideoStore.Services\VideoStore.Services.csproj">
-      <Project>{F9CA67C7-F0FE-4AB4-BBF7-9D75506DDE9E}</Project>
-      <Name>VideoStore.Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\DeliveryService\DeliveryCo.MessageTypes.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeliveryService\service.wsdl" />
-    <None Include="Service References\DeliveryService\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeliveryService\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\EmailTransferService\EmailService.MessageTypes1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\EmailTransferService\service1.wsdl" />
-    <None Include="Service References\EmailTransferService\service2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\EmailTransferService\service21.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\TransferService\service.wsdl" />
-    <None Include="Service References\TransferService\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\TransferService\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\DeliveryService\" />
-    <WCFMetadataStorage Include="Service References\EmailTransferService\" />
-    <WCFMetadataStorage Include="Service References\TransferService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\DeliveryService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\DeliveryService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\DeliveryService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\EmailTransferService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\EmailTransferService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\EmailTransferService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\TransferService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\TransferService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\TransferService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

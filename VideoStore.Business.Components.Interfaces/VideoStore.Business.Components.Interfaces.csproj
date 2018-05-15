@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBankNotificationProvider.cs" />
     <Compile Include="ICatalogueProvider.cs" />
     <Compile Include="IDeliveryNotificationProvider.cs" />
     <Compile Include="IEmailProvider.cs" />

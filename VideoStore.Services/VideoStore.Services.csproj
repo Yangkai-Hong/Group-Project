@@ -59,22 +59,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankNotificationService.cs" />
     <Compile Include="CatalogueService.cs" />
     <Compile Include="DeliveryNotificationService.cs" />
     <Compile Include="MessageTypeConverter.cs" />
     <Compile Include="RoleService.cs" />
-    <Compile Include="Status.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="OrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bank.Services\Bank.Services.Interfaces\Bank.Services.Interfaces.csproj">
-      <Project>{3317F30A-A62C-474D-8D2B-B91605ECF202}</Project>
-      <Name>Bank.Services.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DeliveryCo.Services\DeliveryCo.Services.Interfaces\DeliveryCo.Services.Interfaces.csproj">
       <Project>{7e7a8d7d-87cf-420f-a72b-8f4a258bb48a}</Project>
       <Name>DeliveryCo.Services.Interfaces</Name>
@@ -97,7 +91,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

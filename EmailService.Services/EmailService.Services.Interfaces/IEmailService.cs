@@ -10,7 +10,7 @@ namespace EmailService.Services.Interfaces
     [ServiceContract]
     public interface IEmailService
     {
-        [OperationContract (IsOneWay= true)]
+        [OperationContract]
         void SendEmail(EmailMessage pMessage);
     }
 }

@@ -8,20 +8,16 @@ using Microsoft.Practices.Unity.Configuration;
 using Microsoft.Practices.Unity.ServiceLocatorAdapter;
 using Microsoft.Practices.ServiceLocation;
 using System.Configuration;
-using System.Messaging;
 
 namespace EmailService.Process
 {
     class Program
     {
-       private static readonly String sPublishQueuePath = ".\\private$\\EmailTransacted";
-
         static void Main(string[] args)
         {
             ResolveDependencies();
             using (ServiceHost lHost = new ServiceHost(typeof(EmailService.Services.EmailService)))
             {
-               EnsureQueueExists();
                 lHost.Open();
                 Console.WriteLine("Email Service Started");
                 while (Console.ReadKey().Key != ConsoleKey.Q) ;
@@ -37,13 +33,6 @@ namespace EmailService.Process
             lSection.Containers["containerOne"].Configure(lContainer);
             UnityServiceLocator locator = new UnityServiceLocator(lContainer);
             ServiceLocator.SetLocatorProvider(() => locator);
-        }
-
-        private static void EnsureQueueExists()
-        {
-            // Create the transacted MSMQ queue if necessary.
-            if (!MessageQueue.Exists(sPublishQueuePath))
-                MessageQueue.Create(sPublishQueuePath, true);
         }
     }
 }
