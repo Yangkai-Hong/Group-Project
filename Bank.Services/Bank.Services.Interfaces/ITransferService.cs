@@ -9,8 +9,7 @@ namespace Bank.Services.Interfaces
     [ServiceContract]
     public interface ITransferService
     {
-        [OperationContract]
-        [TransactionFlow(TransactionFlowOption.Allowed)]
-        void Transfer(double pAmount, int pFromAcctNumber, int pToAcctNumber);
+        [OperationContract(IsOneWay = true)]
+        void Transfer(double pAmount, int pFromAcctNumber, int pToAcctNumber, string BankNotificationAddress);
     }
 }
