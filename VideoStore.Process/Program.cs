@@ -17,16 +17,30 @@ using System.Transactions;
 using System.ServiceModel.Description;
 using VideoStore.Business.Components.Interfaces;
 using VideoStore.WebClient.CustomAuth;
+using System.Messaging;
 
 namespace VideoStore.Process
 {
     public class Program
     {
+        private static readonly String sPublishQueuePath = ".\\private$\\BankTransferNotificationTransacted";
+        private static readonly String sPublishQueuePath2 = ".\\private$\\DeliveryNotificationTransacted";
+
         static void Main(string[] args)
         {
+            EnsureMessageQueuesExists();
             ResolveDependencies();
             InsertDummyEntities();
             HostServices();
+        }
+
+        private static void EnsureMessageQueuesExists()
+        {
+            // Create the transacted MSMQ queue if necessary.
+            if (!MessageQueue.Exists(sPublishQueuePath))
+                MessageQueue.Create(sPublishQueuePath, true);
+            if (!MessageQueue.Exists(sPublishQueuePath2))
+                MessageQueue.Create(sPublishQueuePath2, true);
         }
 
         private static void InsertDummyEntities()
@@ -49,7 +63,7 @@ namespace VideoStore.Process
             {
                 Name = "Customer",
                 LoginCredential = new LoginCredential() { UserName = "Customer", Password = "COMP5348" },
-                Email = "Operator@Operator.com",
+                Email = "David@Sydney.edu.au",
                 Address = "1 Central Park",
                 BankAccountNumber = 456,
             };
@@ -68,7 +82,7 @@ namespace VideoStore.Process
                     {
                         Director = "Rene Clair",
                         Genre = "Fiction",
-                        Price = 20.0,
+                        Price = 3000000.0,
                         Title = "And Then there were None"
                     };
 
@@ -78,7 +92,7 @@ namespace VideoStore.Process
                     Stock lGreatExpectationsStock = new Stock()
                     {
                         Media = lGreatExpectations,
-                        Quantity = 5,
+                        Quantity = 50,
                         Warehouse = "Neutral Bay"
                     };
 
@@ -103,7 +117,7 @@ namespace VideoStore.Process
 
                     lContainer.Stocks.AddObject(lSoloistStock);
 
-                    for (int i = 0; i < 30; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                         Media lItem = new Media()
                         {
@@ -151,8 +165,8 @@ namespace VideoStore.Process
             User lOperator = new User()
             {
                 Name = "Operator",
-                LoginCredential = new LoginCredential() { UserName = "Operator", Password = "Operator" },
-                Email = "Operator@Operator.com",
+                LoginCredential = new LoginCredential() { UserName = "Operator", Password = "COMP5348" },
+                Email = "Wang@Sydney.edu.au",
                 Address = "1 Central Park"
             };
 

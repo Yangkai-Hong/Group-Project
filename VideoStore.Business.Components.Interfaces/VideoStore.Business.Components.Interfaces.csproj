@@ -41,11 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBankNotificationProvider.cs" />
     <Compile Include="ICatalogueProvider.cs" />
     <Compile Include="IDeliveryNotificationProvider.cs" />
     <Compile Include="IEmailProvider.cs" />
     <Compile Include="IRoleProvider.cs" />
+    <Compile Include="ITransferNotificationProvider.cs" />
     <Compile Include="IUserProvider.cs" />
     <Compile Include="IOrderProvider.cs" />
     <Compile Include="IStockProvider.cs" />

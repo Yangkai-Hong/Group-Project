@@ -38,9 +38,9 @@
   </wsdl:binding>
   <wsdl:service name="DeliveryService">
     <wsdl:port name="NetMsmqBinding_IDeliveryService" binding="tns:NetMsmqBinding_IDeliveryService">
-      <soap12:address location="net.msmq://localhost/private/DeliveryTransacted" />
+      <soap12:address location="net.msmq://localhost/private/BankTransferTransacted" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.msmq://localhost/private/DeliveryTransacted</wsa10:Address>
+        <wsa10:Address>net.msmq://localhost/private/BankTransferTransacted</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

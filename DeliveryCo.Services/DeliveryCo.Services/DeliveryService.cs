@@ -23,7 +23,7 @@ namespace DeliveryCo.Services
         [OperationBehavior(TransactionScopeRequired = true)]
         public void SubmitDelivery(DeliveryInfo pDeliveryInfo)
         {
-             DeliveryProvider.SubmitDelivery(
+                DeliveryProvider.SubmitDelivery(
                 MessageTypeConverter.Instance.Convert<DeliveryCo.MessageTypes.DeliveryInfo, 
                 DeliveryCo.Business.Entities.DeliveryInfo>(pDeliveryInfo)                
             );

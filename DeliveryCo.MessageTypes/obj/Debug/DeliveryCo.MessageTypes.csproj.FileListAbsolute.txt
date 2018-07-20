@@ -1,6 +1,16 @@
-C:\Users\Yangkai Hong\Desktop\COMP5348 Enterprise Scale Software Architecture\COMP5348-Group-Project-master\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.dll
-C:\Users\Yangkai Hong\Desktop\COMP5348 Enterprise Scale Software Architecture\COMP5348-Group-Project-master\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.pdb
-C:\Users\Yangkai Hong\Desktop\COMP5348 Enterprise Scale Software Architecture\COMP5348-Group-Project-master\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.csproj.CoreCompileInputs.cache
-C:\Users\Yangkai Hong\Desktop\COMP5348 Enterprise Scale Software Architecture\COMP5348-Group-Project-master\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.dll
-C:\Users\Yangkai Hong\Desktop\COMP5348 Enterprise Scale Software Architecture\COMP5348-Group-Project-master\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.pdb
-C:\Users\Yangkai Hong\Desktop\COMP5348 Enterprise Scale Software Architecture\COMP5348-Group-Project-master\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.csprojResolveAssemblyReference.cache
+C:\Users\David\Desktop\GroupProject\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.dll
+C:\Users\David\Desktop\GroupProject\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.pdb
+C:\Users\David\Desktop\GroupProject\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.csproj.CoreCompileInputs.cache
+C:\Users\David\Desktop\GroupProject\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.dll
+C:\Users\David\Desktop\GroupProject\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.pdb
+C:\Users\章鱼丸子\Desktop\GroupProject\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.dll
+C:\Users\章鱼丸子\Desktop\GroupProject\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.pdb
+C:\Users\章鱼丸子\Desktop\GroupProject\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.csprojResolveAssemblyReference.cache
+C:\Users\章鱼丸子\Desktop\GroupProject\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.dll
+C:\Users\章鱼丸子\Desktop\GroupProject\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.pdb
+C:\Users\Yangkai Hong\Desktop\Group-project-videoStore\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.dll
+C:\Users\Yangkai Hong\Desktop\Group-project-videoStore\DeliveryCo.MessageTypes\bin\Debug\DeliveryCo.MessageTypes.pdb
+C:\Users\Yangkai Hong\Desktop\Group-project-videoStore\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.csprojResolveAssemblyReference.cache
+C:\Users\Yangkai Hong\Desktop\Group-project-videoStore\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.csproj.CoreCompileInputs.cache
+C:\Users\Yangkai Hong\Desktop\Group-project-videoStore\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.dll
+C:\Users\Yangkai Hong\Desktop\Group-project-videoStore\DeliveryCo.MessageTypes\obj\Debug\DeliveryCo.MessageTypes.pdb

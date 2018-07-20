@@ -19,8 +19,8 @@ namespace DeliveryCo.Process
 
         static void Main(string[] args)
         {
+            EnsureMessageQueuesExists();
             ResolveDependencies();
-            EnsureQueueExists();
             using (ServiceHost lHost = new ServiceHost(typeof(DeliveryService)))
             {
                 lHost.Open();
@@ -28,6 +28,13 @@ namespace DeliveryCo.Process
                 while (Console.ReadKey().Key != ConsoleKey.Q) ;
             }
 
+        }
+
+        private static void EnsureMessageQueuesExists()
+        {
+            // Create the transacted MSMQ queue if necessary.
+            if (!MessageQueue.Exists(sPublishQueuePath))
+                MessageQueue.Create(sPublishQueuePath, true);
         }
 
         private static void ResolveDependencies()
@@ -39,13 +46,6 @@ namespace DeliveryCo.Process
             lSection.Containers["containerOne"].Configure(lContainer);
             UnityServiceLocator locator = new UnityServiceLocator(lContainer);
             ServiceLocator.SetLocatorProvider(() => locator);
-        }
-
-        private static void EnsureQueueExists()
-        {
-            // Create the transacted MSMQ queue if necessary.
-            if (!MessageQueue.Exists(sPublishQueuePath))
-                MessageQueue.Create(sPublishQueuePath, true);
         }
     }
 }

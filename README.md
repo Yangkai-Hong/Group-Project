@@ -1,7 +1,7 @@
-# VideoStore-MultiSystems
+# Group-project-videoStore
 
-This project amis to improve system's realiability. 
+How to run the application:
 
-There are four subsystems (Bank, Delivery, Email and VideoStore),  one or more subsystem being down is tolerant.
+Just click start since Bank process, DeliveryCo process, EmailService process, VideoStore process and VideoStore webclient have been set as startup projects.  
 
-Techniques: C#, ASP.NET, MSMQ
+If you cannot run the solution, please try delete .vs folder, then start the solution again.

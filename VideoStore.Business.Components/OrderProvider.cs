@@ -10,10 +10,13 @@ using DeliveryCo.MessageTypes;
 using VideoStore.Services;
 using System.Threading;
 
+
 namespace VideoStore.Business.Components
 {
     public class OrderProvider : IOrderProvider
     {
+        private bool TransferStatus;
+
         public IEmailProvider EmailProvider
         {
             get { return ServiceLocator.Current.GetInstance<IEmailProvider>(); }
@@ -26,7 +29,6 @@ namespace VideoStore.Business.Components
 
         public void SubmitOrder(Entities.Order pOrder)
         {
-
             using (TransactionScope lScope = new TransactionScope())
             {
                 LoadMediaStocks(pOrder);
@@ -35,37 +37,29 @@ namespace VideoStore.Business.Components
                 {
                     try
                     {
-                        Status.bankInfoStatus = BankStatus.Failed;
                         pOrder.OrderNumber = Guid.NewGuid();
-
-                        Thread thread1 = new Thread(delegate ()
+                        if (pOrder.CheckStockLevels())
                         {
-                            TransferFundsFromCustomer(UserProvider.ReadUserById(pOrder.Customer.Id).BankAccountNumber, pOrder.Total ?? 0.0);
-                        });
-                        thread1.Start();
-                        Thread.Sleep(3500);
-
-                        if (Status.bankInfoStatus == BankStatus.Failed)
-                            throw new Exception("Insufficient balance");
-                        pOrder.UpdateStockLevels();
-
-                        PlaceDeliveryForOrder(pOrder);
-                        SendOrderPlacedConfirmation(pOrder);
+                            pOrder.UpdateStockLevels();
+                            TransferFundsFromCustomer(UserProvider.ReadUserById(pOrder.Customer.Id).BankAccountNumber, pOrder.Total ?? 0.0, pOrder.OrderNumber.ToString());
+                        }
+                        else {
+                            Console.WriteLine("Insufficient stock");
+                            throw new Exception("Insufficient stock!");
+                        }
+                        
                         lContainer.Orders.ApplyChanges(pOrder);
                         lContainer.SaveChanges();
-                        lScope.Complete();
-
+                        lScope.Complete();                     
                     }
                     catch (Exception lException)
                     {
-                        SendOrderErrorMessage(pOrder, lException);
+                        Console.WriteLine("Error occured while upload stocks: " + lException.Message);
                         throw;
-                    }
+                    }              
                 }
-            }    
+            }
         }
-
-        
 
         private void MarkAppropriateUnchangedAssociations(Order pOrder)
         {
@@ -89,73 +83,59 @@ namespace VideoStore.Business.Components
             }
         }
 
-        
-
-        private void SendOrderErrorMessage(Order pOrder, Exception pException)
-        {
-            EmailProvider.SendMessage(new EmailMessage()
-            {
-                ToAddress = pOrder.Customer.Email,
-                Message = "There was an error in processsing your order " + pOrder.OrderNumber + ": "+ pException.Message +". Please contact Video Store"
-            });
-        }
-
-        private void SendOrderPlacedConfirmation(Order pOrder)
-        {
-            EmailProvider.SendMessage(new EmailMessage()
-            {
-                ToAddress = pOrder.Customer.Email,
-                Message = "Your order " + pOrder.OrderNumber + " has been placed"
-            });
-        }
-
-        private void PlaceDeliveryForOrder(Order pOrder)
-        {
-            Guid identifier = Guid.NewGuid();
-            Delivery lDelivery = new Delivery()
-            {
-                ExternalDeliveryIdentifier = identifier,
-                DeliveryStatus = DeliveryStatus.Submitted,
-                SourceAddress = "Video Store Address",
-                DestinationAddress = pOrder.Customer.Address,
-                Order = pOrder
-            };
-
-            DeliveryService.DeliveryServiceClient lClient = new DeliveryService.DeliveryServiceClient();
-            lClient.SubmitDelivery(new DeliveryInfo()
-            {
-                OrderNumber = lDelivery.Order.OrderNumber.ToString(),
-                SourceAddress = lDelivery.SourceAddress,
-                DestinationAddress = lDelivery.DestinationAddress,
-                DeliveryNotificationAddress = "net.tcp://localhost:9010/DeliveryNotificationService"
-            });
-            lDelivery.ExternalDeliveryIdentifier = identifier;
-            pOrder.Delivery = lDelivery;
-            
-        }
-
-        private void TransferFundsFromCustomer(int pCustomerAccountNumber, double pTotal)
+        private void TransferFundsFromCustomer(int pCustomerAccountNumber, double pTotal, string pOrderNumber)
         {
             try
             {
                 //ExternalServiceFactory.Instance.TransferService.Transfer(pTotal, pCustomerAccountNumber, RetrieveVideoStoreAccountNumber());
-                TransferService.TransferServiceClient lClient = new TransferService.TransferServiceClient();
-                lClient.Transfer(pTotal, pCustomerAccountNumber, RetrieveVideoStoreAccountNumber(),"net.tcp://localhost:9010/BankNotificationService");
-           
+                BankTransferService.TransferServiceClient lClient = new BankTransferService.TransferServiceClient();
+                lClient.Transfer(pTotal, pCustomerAccountNumber, RetrieveVideoStoreAccountNumber(), pOrderNumber);
             }
             catch(Exception e)
             {
-                // throw new Exception(e.Message);
+                throw new Exception("Error Transferring funds for order."+e.Message);
             }
         }
 
-        
+        public Order GetOrderByOrderNumber(Guid pOrderNumber)
+        {
+            using (var lContainer = new VideoStoreEntityModelContainer())
+            {
+                return lContainer.Orders.Include("Customer.LoginCredential").Include("OrderItems.Media")
+                                        .Where((pOrder) => (pOrder.OrderNumber == pOrderNumber))
+                                        .FirstOrDefault();
+            }
+        }
 
         private int RetrieveVideoStoreAccountNumber()
         {
             return 123;
         }
 
+        private void RollbackOrder(Order pOrder)
+        {
+            using (TransactionScope lScope = new TransactionScope())
+            using (VideoStoreEntityModelContainer lContainer = new VideoStoreEntityModelContainer())
+            {
+                if (pOrder != null)
+                {
+                    pOrder.RollbackStockLevels();
+                    lContainer.Orders.ApplyChanges(pOrder);
+                    lContainer.SaveChanges();
+                }
+                lScope.Complete();
+            }
+        }
+
+        public void setTransferStatus(bool Status)
+        {
+            TransferStatus = Status;
+        }
+        public bool getTransferStatus() { 
+            
+                return TransferStatus;
+            
+        }
 
     }
 }
